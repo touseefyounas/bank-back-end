@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import com.fdmgroup.Bank.customer.Customer;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -99,6 +102,29 @@ public class AccountController {
 		return ResponseEntity.ok(accServ.getAccountsByCityName(city));
 	}
 	
+	@Operation(summary="Updates the interest rate of an Account by Account Id")
+	@ApiResponses(value= {
+			@ApiResponse(responseCode="200", content=@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)),
+			@ApiResponse(responseCode="404")	
+	})
+	@PatchMapping("/{id}/interest")
+	public ResponseEntity<SavingsAccount> setInterestRate(@PathVariable long id, @RequestParam double interestRate){
+		return ResponseEntity.ok(accServ.setInterestRate(id, interestRate));
+	}
 	
+	@Operation(summary="Updates the balance of an Account by Account Id")
+	@ApiResponses(value= {
+			@ApiResponse(responseCode="200", content=@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)),
+			@ApiResponse(responseCode="404")	
+	})
+	@PatchMapping("/{id}/balance")
+	public ResponseEntity<Account> setBalance(@PathVariable long id, @RequestParam double balance){
+		return ResponseEntity.ok(accServ.setBalance(id, balance));
+	}
+	
+	@GetMapping("/{id}/find-customer")
+	public ResponseEntity<Customer> getCustomerbyAccountId(@PathVariable long id){
+		return ResponseEntity.ok(accServ.getCustomerById(id));
+	}
 	
 }

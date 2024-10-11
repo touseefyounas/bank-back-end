@@ -68,4 +68,35 @@ public class AccountService {
 		return accRepo.findAccountsByCityName(city);
 	}
 
+	public SavingsAccount setInterestRate(long id, double newRate) {
+		
+		Account account = getAccountById(id);
+		System.out.println(account);
+		if (account instanceof SavingsAccount) {
+			SavingsAccount savingsAccount = (SavingsAccount) account;
+			savingsAccount.setInterestRate(newRate);
+			accRepo.save(savingsAccount);
+			return savingsAccount;
+		}
+		return null;
+		
+		
+	}
+
+	public Account setBalance(long id, double balance) {
+		
+		Account account = getAccountById(id);
+		System.out.println(account);
+		if(account!=null) {
+			account.setBalance(balance);
+			accRepo.save(account);
+			return account;
+		}
+		return null;
+	}
+
+	public Customer getCustomerById(long id) {
+		return accRepo.findCustomerByAccountId(id);
+	}
+
 }

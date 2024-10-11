@@ -14,6 +14,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fdmgroup.Bank.customer.AddressNotFoundException;
 
 public class GeoCodingApi {
 	
@@ -34,11 +35,10 @@ public class GeoCodingApi {
 		return unpack(response);
 		
 		} catch(Exception e) {
-			e.printStackTrace();
+			throw new AddressNotFoundException("Postal code is invalid.");
 		}
 		
-		return Collections.emptyMap();
-	}
+		}
 	
 	public static Map<String, String> getLocation(String postalCode) {
 		
@@ -73,9 +73,18 @@ public class GeoCodingApi {
 		
 		try {
 			JsonNode root = mapper.readTree(response);
+			System.out.println(root);
 			
+			if (root.has("error")){
+				
+				throw new AddressNotFoundException("Invalid Postal Code");
+				
+			} else {
 			addressMap.put("city", root.at("/standard/city").asText());
 			addressMap.put("province", root.at("/standard/prov").asText());
+			System.out.println("city: " + addressMap.get("city"));
+			System.out.println("city: " + addressMap.get("province"));
+			}
 			
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();

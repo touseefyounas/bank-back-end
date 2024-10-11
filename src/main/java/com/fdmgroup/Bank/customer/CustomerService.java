@@ -55,8 +55,14 @@ public class CustomerService {
 		
 		Map<String, String> geoInfo = GeoCodingApi.getLocationWebClient(customerCreateDto.getPostalCode());
 		
+		System.out.println(geoInfo);
+		
 		String city = geoInfo.get("city");
 		String province = geoInfo.get("province");
+		
+		if (city.isEmpty() ||  province.isEmpty()) {
+			throw new AddressNotFoundException("Invalid Postal code");
+		}
 		
 		Address address = new Address(customerCreateDto.getStreetNumber(), customerCreateDto.getPostalCode(), city, province);
 		if (customerCreateDto.getCustomerType().equalsIgnoreCase("person")) {

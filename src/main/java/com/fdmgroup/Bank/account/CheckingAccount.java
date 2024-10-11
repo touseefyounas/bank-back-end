@@ -22,8 +22,9 @@ public class CheckingAccount extends Account {
 	}
 
 	public int getNextCheckNumber() {
+		int currentCheckNumber = nextCheckNumber;
 		nextCheckNumber += 1;
-		return nextCheckNumber;
+		return currentCheckNumber;
 	}
 
 	public void setNextCheckNumber(int nextCheckNumber) {
